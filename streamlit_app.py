@@ -5,12 +5,13 @@ import streamlit as st
 st.header("주사위 결과 중복 없이 나열하기")
 
 
-# 입력값 받기
-num_dice = st.number_input("주사위의 수 (2 이상)", min_value=2, value=2, step=1)
+
+num_dice = st.number_input("주사위의 수 (1 이상)", min_value=1, value=2, step=1)
 num_faces = 6  # 주사위 면의 수는 6으로 고정
 num_rolls_input = st.text_input("주사위를 굴리는 횟수 (숫자 또는 '모든 경우의 수' 입력)", value="10")
-multiple_of = st.text_input("합이 배수인지 판별할 수 (입력 시 배수 여부 표시" \
-")")
+multiple_of = st.text_input("합이 배수인지 판별할 수 (입력 시 배수 여부 표시)")
+# 순서 상관없이(중복 제거) or 순서 상관있게(중복 허용) 결과 나열 선택
+ignore_order = st.checkbox("주사위 결과를 순서와 상관없이 나열 (예: (1,4), (4,1) 중복 제거)", value=True)
 
 if st.button("주사위 굴리기"):
     import random
@@ -21,17 +22,22 @@ if st.button("주사위 굴리기"):
         1: "⚀", 2: "⚁", 3: "⚂", 4: "⚃", 5: "⚄", 6: "⚅"
     }
     if num_rolls_input.strip() == "모든 경우의 수":
-        # 모든 경우의 수: 중복 없이 나올 수 있는 모든 조합
         all_combinations = product(range(1, int(num_faces)+1), repeat=int(num_dice))
         for comb in all_combinations:
-            roll = tuple(sorted(comb))
-            results.add(roll)
+            if ignore_order:
+                roll = tuple(sorted(comb))
+                results.add(roll)
+            else:
+                results.add(tuple(comb))
         # all_rolls는 실제 굴림 결과가 아니므로, 그림 출력은 생략
     else:
         num_rolls = int(num_rolls_input)
         for _ in range(num_rolls):
             raw_roll = [random.randint(1, int(num_faces)) for _ in range(int(num_dice))]
-            roll = tuple(sorted(raw_roll))
+            if ignore_order:
+                roll = tuple(sorted(raw_roll))
+            else:
+                roll = tuple(raw_roll)
             results.add(roll)
             dice_imgs = []
             for v in raw_roll:
