@@ -16,9 +16,26 @@ num_rolls = st.number_input("주사위를 굴리는 횟수 (1 이상)", min_valu
 if st.button("주사위 굴리기"):
     import random
     results = set()
+    all_rolls = []
+    dice_faces = {
+        1: "⚀", 2: "⚁", 3: "⚂", 4: "⚃", 5: "⚄", 6: "⚅"
+    }
     for _ in range(int(num_rolls)):
-        roll = tuple(sorted([random.randint(1, int(num_faces)) for _ in range(int(num_dice))]))
+        raw_roll = [random.randint(1, int(num_faces)) for _ in range(int(num_dice))]
+        roll = tuple(sorted(raw_roll))
         results.add(roll)
+        dice_imgs = []
+        for v in raw_roll:
+            if v in dice_faces:
+                dice_imgs.append(dice_faces[v])
+            else:
+                dice_imgs.append(str(v))
+        all_rolls.append(dice_imgs)
+
+    st.subheader("굴린 결과:")
+    for i, dice_imgs in enumerate(all_rolls, 1):
+        dice_html = f"<span style='font-size: 5em;'>{' '.join(dice_imgs)}</span>"
+        st.markdown(f"{i}번째: {dice_html}", unsafe_allow_html=True)
     st.subheader("나온 조합 (중복 없이):")
     st.write(
         ", ".join(f"({', '.join(map(str, r))})" for r in sorted(results))
