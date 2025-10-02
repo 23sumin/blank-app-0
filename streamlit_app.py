@@ -7,7 +7,7 @@ st.header("주사위 결과 중복 없이 나열하기")
 
 # 입력값 받기
 num_dice = st.number_input("주사위의 수 (2 이상)", min_value=2, value=2, step=1)
-num_faces = st.number_input("주사위의 면의 수 (2 이상)", min_value=2, value=6, step=1)
+num_faces = 6  # 주사위 면의 수는 6으로 고정
 num_rolls_input = st.text_input("주사위를 굴리는 횟수 (숫자 또는 '모든 경우의 수' 입력)", value="10")
 multiple_of = st.text_input("합이 배수인지 판별할 수 (입력 시 배수 여부 표시" \
 ")")
