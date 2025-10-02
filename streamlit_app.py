@@ -33,9 +33,18 @@ if st.button("주사위 굴리기"):
         all_rolls.append(dice_imgs)
 
     st.subheader("굴린 결과:")
-    for i, dice_imgs in enumerate(all_rolls, 1):
-        dice_html = f"<span style='font-size: 5em;'>{' '.join(dice_imgs)}</span>"
-        st.markdown(f"{i}번째: {dice_html}", unsafe_allow_html=True)
+    if int(num_rolls) >= 101:
+        st.write("(주사위 그림은 100회까지만 표시됩니다)")
+        # 각 굴림의 숫자만 추출하여 한 줄에 공백으로만 구분해 모두 출력
+        result_values = []
+        for dice_imgs in all_rolls:
+            nums = [str(v) if v.isdigit() else ''.join([c for c in v if c.isdigit()]) for v in dice_imgs]
+            result_values.extend(nums)
+        st.write(" ".join(result_values))
+    else:
+        for i, dice_imgs in enumerate(all_rolls, 1):
+            dice_html = f"<span style='font-size: 5em;'>{' '.join(dice_imgs)}</span>"
+            st.markdown(f"{i}번째: {dice_html}", unsafe_allow_html=True)
     st.subheader("나온 조합 (중복 없이):")
     st.write(
         ", ".join(f"({', '.join(map(str, r))})" for r in sorted(results))
