@@ -26,12 +26,22 @@ idx = st.session_state.quiz_idx
 if idx < len(problems):
 	st.write(problems[idx]["question"])
 	user_answer = st.text_input("정답을 입력하세요", key=f"quiz_{idx}")
-	if st.button("제출", key=f"submit_{idx}"):
+	col1, col2 = st.columns([1,1])
+	with col1:
+		submitted = st.button("제출", key=f"submit_{idx}")
+	next_enabled = False
+	if submitted:
 		if user_answer.strip() == problems[idx]["answer"]:
-			st.success("정답입니다! 다음 문제로 이동합니다.")
+			st.success("정답입니다! 다음 문제로 이동하려면 '다음' 버튼을 누르세요.")
 			st.session_state.quiz_correct[idx] = True
-			st.session_state.quiz_idx += 1
+			next_enabled = True
 		else:
 			st.error("오답입니다. 다시 시도해보세요.")
+	if st.session_state.quiz_correct[idx]:
+		next_enabled = True
+	with col2:
+		if next_enabled:
+			if st.button("다음", key=f"next_{idx}"):
+				st.session_state.quiz_idx += 1
 else:
 	st.success("모든 문제를 맞췄습니다! 수고하셨습니다.")

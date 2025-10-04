@@ -2,7 +2,7 @@ import streamlit as st
 
 
 
-st.header("주사위 결과 중복 없이 나열하기")
+st.header("주사위 굴리기")
 
 
 
@@ -11,7 +11,7 @@ num_faces = 6  # 주사위 면의 수는 6으로 고정
 num_rolls_input = st.text_input("주사위를 굴리는 횟수 (숫자 또는 '모든 경우의 수' 입력)", value="10")
 multiple_of = st.text_input("합이 배수인지 판별할 수 (입력 시 배수 여부 표시)")
 # 순서 상관없이(중복 제거) or 순서 상관있게(중복 허용) 결과 나열 선택
-ignore_order = st.checkbox("주사위 결과를 순서와 상관없이 나열 (예: (1,4), (4,1) 중복 제거)", value=True)
+ignore_order = st.checkbox("(합이 중복되는 수 제거)", value=True)
 
 if st.button("주사위 굴리기"):
     import random

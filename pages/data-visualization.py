@@ -2,13 +2,12 @@ import itertools
 
 import streamlit as st
 
-st.header("학교 의자 나열하기")
+st.header("의자 나열하기")
 
 # 의자 개수 입력
 num_chairs = st.number_input("의자 개수 설정", min_value=1, max_value=20, value=5, step=1)
 
-# 이름 입력
-st.write("자리 주인의 이름을 입력하세요:")
+st.write("자리 주인의 이름을 입력하세요 ()로 자리를 고정할 수 있습니다.")
 names = []
 for i in range(int(num_chairs)):
 	name = st.text_input(f"{i+1}번 의자 주인 이름", key=f"chair_name_{i}")
